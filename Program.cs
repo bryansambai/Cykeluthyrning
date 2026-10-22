@@ -1,8 +1,8 @@
 ﻿
 
-
+/*
 Console.Write("Ange batteri nivå för din nya elcykel: ");
-int batteryLevel = int.Parse(Console.ReadLine());
+int batteryLevel = int.Parse(Console.ReadLine()!);
 
 if (batteryLevel >= 0 && batteryLevel <= 100)
 {
@@ -20,3 +20,11 @@ else
     Console.WriteLine("Ogiltig batterinivå. Ange batteri nivå mellan 0% och 100%.");
 }
 
+*/
+
+
+
+
+RentalService rentalService = new RentalService();
+
+rentalService.ShowVehicles();
