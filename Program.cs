@@ -28,3 +28,10 @@ else
 RentalService rentalService = new RentalService();
 
 rentalService.ShowVehicles();
+rentalService.RegisterCustomer();
+rentalService.RentVehicle();
+
+
+
+
+
