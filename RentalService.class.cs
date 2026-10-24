@@ -47,10 +47,11 @@ public class RentalService
         int age = int.Parse(Console.ReadLine()!);
 
 
-        Console.Write("Är du medlem? (j/n)? ");
+        Console.Write("Är du medlem? (ja/nej)? ");
         string isMember = Console.ReadLine()!;
+
         bool status;
-        if(isMember == "j")
+        if(isMember == "ja")
         {
             status = true;
         }
@@ -61,7 +62,7 @@ public class RentalService
         
         Console.WriteLine($"Namn: {name}.");
         Console.WriteLine($"Ålder: {age} år.");
-        Console.WriteLine($"Medlem (j/n): {isMember}");
+        Console.WriteLine($"Medlem (ja/nej): {isMember}");
 
         Console.WriteLine($"{name} är registerad. ");
 
@@ -77,7 +78,7 @@ public class RentalService
         bool customerFound = false;
         int customerAge = 0;
         bool isMember = false;
-        Customer matchedCustomer = null;
+        Customer matchedCustomer = null!;
         foreach (Customer customer in customers)
         {
             if (customerName == customer.Name)
@@ -92,22 +93,22 @@ public class RentalService
 
         if (customerFound == false)
         {
-             Console.WriteLine($"Kunden hittades inte i listan.");
-             return;
+            Console.WriteLine($"Kunden hittades inte i listan.");
+            return;
         }
         
-         Console.Write("Ange fordons nr: ");
-         int choicenVehicle = int.Parse(Console.ReadLine()!);
+        Console.Write("Ange fordons nr: ");
+        int choicenVehicle = int.Parse(Console.ReadLine()!);
 
-         bool vehicleFound = false;
+        bool vehicleFound = false;
         Vehicle matchedVehicle = vehicles[0];
-         foreach (Vehicle vehicle in vehicles)
+        foreach (Vehicle vehicle in vehicles)
         {
            
             if (choicenVehicle == vehicle.VehicleNumber)
             { 
                 matchedVehicle = vehicle;
-                 if (vehicle is ElectricBicycle electricBicycle)
+                if (vehicle is ElectricBicycle electricBicycle)
                 {
                     if (electricBicycle.BatteryLevel < 30)
                     {
@@ -177,6 +178,86 @@ public class RentalService
         }
         decimal finalPrice = rental.CalculateFinalPrice();
         Console.WriteLine($"Totalt pris: {finalPrice} kr");
+    }
+
+    public void ReturnVehicle()
+    {
+        Console.Write("Ange fordonsnummer att lämna tillbaka: ");
+        int vehicleNumber = int.Parse(Console.ReadLine()!);
+
+        bool vehicleFound = false;
+        Vehicle matchedVehicle = vehicles[0];
+        foreach (Vehicle vehicle in vehicles)
+        {
+            if (vehicleNumber == vehicle.VehicleNumber)
+            {
+                matchedVehicle = vehicle;
+                vehicleFound = true;
+            }
+        }
+
+        if (vehicleFound == false)
+        {
+            Console.WriteLine("Fordonet saknas i listan.  ");
+            return;
+        }
+
+        if (matchedVehicle.Rented == false)
+        {
+            Console.WriteLine("Fordonet är redan ledigt.");
+            return;
+        }
+
+        matchedVehicle.ReturnVehicle();
+        Console.WriteLine($"Fordon {matchedVehicle.VehicleNumber} har lämnats tillbaka.");
+    }
+
+    public void ChargeVehicle()
+    {
+        Console.Write("Ange fordonsnummer för elcykeln som ska laddas: ");
+        int vehicleNumber = int.Parse(Console.ReadLine()!);
+
+        bool vehicleFound = false;
+        Vehicle matchedVehicle = vehicles[0];
+        foreach (Vehicle vehicle in vehicles)
+        {
+            if (vehicleNumber == vehicle.VehicleNumber)
+            {
+                matchedVehicle = vehicle;
+                vehicleFound = true;
+            }
+        }
+        if (vehicleFound == false)
+        {
+            Console.WriteLine("Fordonsnumret finns inte i listan.");
+            return;
+        }
+
+        if (matchedVehicle is not ElectricBicycle)
+        {
+            Console.WriteLine("Fordonet är inte en elcykel.");
+            return;
+        }
+
+        if (matchedVehicle.Rented == true)
+        {
+            Console.WriteLine("Elcykeln är uthyrd och kan inte laddas.");
+            return;
+        }
+
+        if (matchedVehicle is ElectricBicycle electricBicycle1)
+        {
+            if (electricBicycle1.BatteryLevel == 100)
+            {
+                Console.WriteLine("Batteriet är redan fullt.");
+                return;
+            }
+            else
+            {
+                electricBicycle1.ChargeBattery();
+                Console.WriteLine($"Elcykel {electricBicycle1.VehicleNumber} är nu laddad till {electricBicycle1.BatteryLevel}%.");
+            }  
+        }
     }
 }
 

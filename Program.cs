@@ -39,7 +39,7 @@ while (running)
     Console.WriteLine("6. Avsluta");
     Console.Write("\nVal: ");
 
-    int choice = int.Parse(Console.ReadLine())!;
+    int choice = int.Parse(Console.ReadLine()!);
 
     if (choice == 1)
     {
@@ -53,6 +53,15 @@ while (running)
     {
         rentalService.RentVehicle();
     }
+    else if (choice == 4)
+    {
+        rentalService.ReturnVehicle();
+    }
+    else if (choice == 5)
+    {
+        rentalService.ChargeVehicle();
+    }
+
     else if (choice == 6)
     {
         break;
