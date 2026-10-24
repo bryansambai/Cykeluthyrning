@@ -44,11 +44,11 @@ public class RentalService
         
 
         Console.Write("Hur gammal är du? ");
-        int age = int.Parse(Console.ReadLine());
+        int age = int.Parse(Console.ReadLine()!);
 
 
         Console.Write("Är du medlem? (j/n)? ");
-        string isMember = Console.ReadLine();
+        string isMember = Console.ReadLine()!;
         bool status;
         if(isMember == "j")
         {
@@ -71,7 +71,7 @@ public class RentalService
     public void RentVehicle()
     {
         Console.Write("Ange kunden: ");
-        string customerName = Console.ReadLine();
+        string customerName = Console.ReadLine()!;
 
         bool customerFound = false;
         int customerAge = 0;
@@ -92,7 +92,7 @@ public class RentalService
         }
 
          Console.Write("Ange fordons nr: ");
-         int choicenVehicle = int.Parse(Console.ReadLine());
+         int choicenVehicle = int.Parse(Console.ReadLine()!);
 
          bool vehicleFound = false;
          foreach (Vehicle vehicle in vehicles)
