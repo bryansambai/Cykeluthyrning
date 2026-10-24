@@ -11,6 +11,20 @@ public class ElectricBicycle: Vehicle
     {
         BatteryLevel = 100;
     }
+    public void UseBattery(int hours)
+    {
+        int batteryUsed = hours * 10;
+        int newLevel = BatteryLevel - batteryUsed;
+
+        if  (newLevel < 0)
+        {
+            BatteryLevel = 0;
+        }
+        else
+        {
+            BatteryLevel = newLevel;
+        }
+    }
     public bool NewBatteryLevel(int value)
     {
         if (value < 0 || value > 100)

@@ -73,12 +73,17 @@ public class RentalService
         Console.Write("Ange kunden: ");
         string customerName = Console.ReadLine()!;
 
+        
         bool customerFound = false;
         int customerAge = 0;
+        bool isMember = false;
+        Customer matchedCustomer = null;
         foreach (Customer customer in customers)
         {
             if (customerName == customer.Name)
             {
+                matchedCustomer = customer;
+                isMember = customer.IsMember;
                 customerFound = true;
                 Console.WriteLine($"Kunden {customer.Name} hittades. ");
                 customerAge = customer.Age;
@@ -90,16 +95,18 @@ public class RentalService
              Console.WriteLine($"Kunden hittades inte i listan.");
              return;
         }
-
+        
          Console.Write("Ange fordons nr: ");
          int choicenVehicle = int.Parse(Console.ReadLine()!);
 
          bool vehicleFound = false;
+        Vehicle matchedVehicle = vehicles[0];
          foreach (Vehicle vehicle in vehicles)
         {
            
             if (choicenVehicle == vehicle.VehicleNumber)
             { 
+                matchedVehicle = vehicle;
                  if (vehicle is ElectricBicycle electricBicycle)
                 {
                     if (electricBicycle.BatteryLevel < 30)
@@ -157,5 +164,23 @@ public class RentalService
             Console.WriteLine("Fordonet hittades inte i listan. ");
             return;
         }
+        
+        Console.Write("Hur många timmar vill du hyra fordonet? ");
+        int hoursRented = int.Parse(Console.ReadLine()!);
+
+        Rental rental = new Rental(matchedCustomer, matchedVehicle, hoursRented);
+
+        if (matchedVehicle is ElectricBicycle electricBicycle1)
+        {
+            electricBicycle1.UseBattery(hoursRented);
+            Console.WriteLine($"Batteri efter uthyrning: {electricBicycle1.BatteryLevel}%");
+        }
+        decimal finalPrice = rental.CalculateFinalPrice();
+        Console.WriteLine($"Totalt pris: {finalPrice} kr");
     }
 }
+
+
+
+
+
