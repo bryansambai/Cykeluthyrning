@@ -6,6 +6,7 @@ public class RentalService
 {
     public List<Customer> customers = new List<Customer>();
     public List<Vehicle> vehicles = new List<Vehicle>();
+    public List<Rental> activeRentals = new List<Rental>();
     public RentalService()
     {
         vehicles.Add(new Bicycle(1, 40m));
@@ -170,7 +171,9 @@ public class RentalService
         int hoursRented = int.Parse(Console.ReadLine()!);
 
         Rental rental = new Rental(matchedCustomer, matchedVehicle, hoursRented);
-
+        
+        activeRentals.Add(rental);
+        
         if (matchedVehicle is ElectricBicycle electricBicycle1)
         {
             electricBicycle1.UseBattery(hoursRented);
@@ -209,6 +212,21 @@ public class RentalService
         }
 
         matchedVehicle.ReturnVehicle();
+        Rental matchedRental = activeRentals.Find(rental => rental.Vehicle.VehicleNumber == vehicleNumber)!;
+        decimal finalPrice = matchedRental.CalculateFinalPrice();
+        decimal basePrice = matchedRental.CalculateBasePrice();
+        decimal discount = matchedRental.CalculateDiscount();
+
+        Console.WriteLine("\n--- Kvitto ---");
+        Console.WriteLine($"Kund: {matchedRental.Customer.Name}. ");
+        Console.WriteLine($"Fordon: {matchedRental.Vehicle.VehicleNumber}. ");
+        Console.WriteLine($"Hyrestid: {matchedRental.Hours} timmar. ");
+        Console.WriteLine($"Ordinarie pris: {basePrice} kr. ");
+        Console.WriteLine($"Medlemsrabatt (10 %) -{discount} kr. ");
+        Console.WriteLine($"Totalt pris: {finalPrice} kr. ");
+        Console.WriteLine("----------------");
+        activeRentals.Remove(matchedRental);
+
         Console.WriteLine($"Fordon {matchedVehicle.VehicleNumber} har lämnats tillbaka.");
     }
 
@@ -241,7 +259,7 @@ public class RentalService
 
         if (matchedVehicle.Rented == true)
         {
-            Console.WriteLine("Elcykeln är uthyrd och kan inte laddas.");
+            Console.WriteLine("Elcykeln är uthyrd och kan inte laddas, lämna tillbaka först. ");
             return;
         }
 
@@ -260,8 +278,6 @@ public class RentalService
         }
     }
 }
-
-
 
 
 
